@@ -1,9 +1,14 @@
 package com.example.speechapp.ui
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.speech.RecognizerIntent
+import android.speech.tts.TextToSpeech
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.speechapp.R
 import com.example.speechapp.data.Message
@@ -19,12 +24,28 @@ import kotlinx.android.synthetic.main.activity_main.*
 import opennlp.tools.doccat.DoccatModel
 import opennlp.tools.tokenize.TokenizerModel
 import java.io.FileInputStream
+import java.lang.Exception
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        private const val REQUEST_CODE_STT = 1
+    }
+
     private lateinit var adapter : MessagingAdapter
     private val botList = listOf("Peter", "Jürgen", "Ralf", "Jessi")
+
+    //speeachEngin
+    private val textToSpeechEngine: TextToSpeech by lazy {
+        TextToSpeech(this,
+            TextToSpeech.OnInitListener { status ->
+                if (status == TextToSpeech.SUCCESS) {
+                    textToSpeechEngine.language = Locale.GERMAN
+                }
+            })
+    }
 
     //val tokenModel = TokenizerModel(FileInputStream(""))
     //var categorizerModel = DoccatModel(FileInputStream(""));
@@ -38,6 +59,24 @@ class MainActivity : AppCompatActivity() {
         recyclerView()
 
         clickEvents()
+
+
+        btn_send.setOnClickListener {
+            val sttIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            sttIntent.putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+            )
+            sttIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+            sttIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now!")
+
+            try {
+                startActivityForResult(sttIntent, REQUEST_CODE_STT)
+            } catch (e: ActivityNotFoundException) {
+                e.printStackTrace()
+                Toast.makeText(this, "Your device does not support STT.", Toast.LENGTH_LONG).show()
+            }
+        }
 
         val random =(0..3).random()
         costomMessage("Hallo ich bin ${botList[random]}, wie kann ich helfen?")
@@ -124,6 +163,16 @@ class MainActivity : AppCompatActivity() {
                 adapter.insertMessage(Message(message, RECEIVE_ID, timeStamp))
                 rv_messages.scrollToPosition(adapter.itemCount-1)
             }
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    textToSpeechEngine.speak(message, TextToSpeech.QUEUE_FLUSH, null, "tts1")
+                } else {
+                    textToSpeechEngine.speak(message, TextToSpeech.QUEUE_FLUSH, null)
+                }
+            }catch (e: Exception){
+                "Leider etwas in Costom Message fehlgeschlagen"
+            }
+
         }
     }
 }
