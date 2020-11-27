@@ -16,17 +16,25 @@ import kotlinx.coroutines.*
 import com.example.speechapp.utils.Constants.RECEIVE_ID
 import com.example.speechapp.utils.Constants.SEND_ID
 import kotlinx.android.synthetic.main.activity_main.*
-import java.sql.Timestamp
+import opennlp.tools.doccat.DoccatModel
+import opennlp.tools.tokenize.TokenizerModel
+import java.io.FileInputStream
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter : MessagingAdapter
     private val botList = listOf("Peter", "Jürgen", "Ralf", "Jessi")
 
+    //val tokenModel = TokenizerModel(FileInputStream(""))
+    //var categorizerModel = DoccatModel(FileInputStream(""));
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setModels()
         recyclerView()
 
         clickEvents()
@@ -34,6 +42,9 @@ class MainActivity : AppCompatActivity() {
         val random =(0..3).random()
         costomMessage("Hallo ich bin ${botList[random]}, wie kann ich helfen?")
     }
+
+    private fun setModels(){}
+
 
     private fun clickEvents(){
         btn_send.setOnClickListener{
