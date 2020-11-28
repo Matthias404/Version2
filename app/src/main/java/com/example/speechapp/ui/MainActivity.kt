@@ -170,6 +170,7 @@ class MainActivity : AppCompatActivity() {
                     textToSpeechEngine.speak(message, TextToSpeech.QUEUE_FLUSH, null)
                 }
             }catch (e: Exception){
+                
                 "Leider etwas in Costom Message fehlgeschlagen"
             }
 
