@@ -41,6 +41,7 @@ class MessagingAdapter:RecyclerView.Adapter<MessagingAdapter.MessageViewHolder>(
                     visibility  = View.VISIBLE
                 }
                 holder.itemView.tv_bot_message.visibility=View.GONE
+                holder.itemView.tv_bot_message_image.visibility = View.GONE
             }
 
             RECEIVE_ID -> {
@@ -49,6 +50,7 @@ class MessagingAdapter:RecyclerView.Adapter<MessagingAdapter.MessageViewHolder>(
                     visibility = View.VISIBLE
                 }
                 holder.itemView.tv_message.visibility = View.GONE
+                holder.itemView.tv_bot_message_image.visibility = View.GONE
             }
 
             RECEIVE_IMAGE_ID ->{

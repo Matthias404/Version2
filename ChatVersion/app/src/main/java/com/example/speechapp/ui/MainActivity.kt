@@ -78,10 +78,12 @@ class MainActivity : AppCompatActivity() {
             sendMessage()
         }
         sttIntent.putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-        )
 
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM,
+                
+
+        )
 
         et_message.setOnClickListener{
             GlobalScope.launch {
