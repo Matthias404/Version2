@@ -50,5 +50,6 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
     implementation 'com.google.android.material:material:1.3.0-alpha04'
 
-
+    //openNLP
+    implementation 'org.apache.opennlp:opennlp-tools:1.9.3'
 }

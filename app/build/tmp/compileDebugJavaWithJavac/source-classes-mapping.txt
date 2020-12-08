@@ -1,0 +1,2 @@
+com/example/speechapp/BuildConfig.java
+ com.example.speechapp.BuildConfig
